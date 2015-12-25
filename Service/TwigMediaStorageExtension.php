@@ -37,8 +37,11 @@ class TwigMediaStorageExtension extends \Twig_Extension
 
     public function getFilters()
     {
+	$self = $this;
         return array(
-            'locateSrc' => new \Twig_Filter_Method($this, 'locateSrcFilter'),
+            new \Twig_Filter('locateSrc', function(\Twig_Environment $env, $id, $name, $type, $variant = NULL, $fallbackToDefaultVariant = true, $options = array()) use ($self) {
+                    return $self->locateSrcFilter($env, $id, $name, $type, $variant, $fallbackToDefaultVariant, $options);
+            }),
         );
     }
 
@@ -46,7 +49,7 @@ class TwigMediaStorageExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'locateSrc' => new \Twig_Function_Function('Oryzone\Bundle\MediaStorageBundle\Service\TwigMediaStorageExtension::locateSrc',
+            'locateSrc' => new \Twig_Function('locateSrc', 'Oryzone\Bundle\MediaStorageBundle\Service\TwigMediaStorageExtension::locateSrc',
                                 array( 'is_safe' => array('html'), 'needs_context' => FALSE, 'needs_environment' => TRUE) ),
         );
     }
